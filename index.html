@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>@GREGOTEAM  | GREGO</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 25%, rgba(0, 110, 255, .18), transparent 35%),
+        #02050b;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    left: -250px;
+    top: 20%;
+    background: rgba(0, 102, 255, .18);
+    filter: blur(100px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    right: -250px;
+    bottom: 5%;
+    background: rgba(0, 80, 255, .15);
+    filter: blur(100px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* LOADER */
+
+#loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #02050b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.loader-gif {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .28;
+}
+
+#loader::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .62);
+}
+
+.loader-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+}
+
+.loader-title {
+    font-size: clamp(28px, 7vw, 60px);
+    font-weight: 900;
+    letter-spacing: 7px;
+    margin-bottom: 18px;
+}
+
+.loader-title span {
+    color: #2684ff;
+}
+
+.loader-status {
+    color: #a9c8ff;
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,.12);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #2684ff;
+    box-shadow: 0 0 15px #2684ff;
+    transition: width .15s linear;
+}
+
+.percent {
+    margin-top: 10px;
+    color: #6fa8ff;
+    font-size: 13px;
+}
+
+/* NAVBAR */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    background: rgba(2, 5, 11, .72);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    backdrop-filter: blur(18px);
+    z-index: 1000;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 3px;
+}
+
+.logo span {
+    color: #2684ff;
+}
+
+.status {
+    font-size: 11px;
+    color: #64a3ff;
+    letter-spacing: 2px;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 100vh;
+    padding: 130px 7% 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.badge {
+    padding: 8px 15px;
+    border: 1px solid rgba(38,132,255,.4);
+    border-radius: 30px;
+    color: #73aeff;
+    background: rgba(38,132,255,.08);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(55px, 13vw, 130px);
+    line-height: .9;
+    font-weight: 1000;
+    letter-spacing: -5px;
+}
+
+.hero h1 span {
+    color: #2684ff;
+    text-shadow: 0 0 40px rgba(38,132,255,.45);
+}
+
+.hero h2 {
+    margin-top: 25px;
+    font-size: clamp(18px, 4vw, 30px);
+    letter-spacing: 8px;
+    color: #d9e7ff;
+}
+
+.hero p {
+    max-width: 650px;
+    margin-top: 20px;
+    color: #8290a7;
+    line-height: 1.8;
+}
+
+/* CAMERA */
+
+.camera-area {
+    margin-top: 70px;
+    width: min(500px, 90vw);
+    height: 430px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-shell {
+    width: 330px;
+    height: 390px;
+    border-radius: 45px;
+    background: linear-gradient(145deg, #101722, #05080e);
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6),
+        0 0 60px rgba(0,102,255,.12);
+    position: relative;
+    transform: rotate(-4deg);
+}
+
+.camera-title {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #6f7f96;
+}
+
+.lens {
+    position: absolute;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 30%, #263b61, #07101e 40%, #02050b 70%);
+    border: 7px solid #161e2a;
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.08),
+        0 0 25px rgba(0,0,0,.8);
+}
+
+.lens::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    top: 25px;
+    left: 25px;
+    background: rgba(130,190,255,.22);
+    filter: blur(4px);
+}
+
+.lens.one {
+    top: 35px;
+    left: 35px;
+}
+
+.lens.two {
+    top: 35px;
+    right: 35px;
+}
+
+.lens.three {
+    bottom: 75px;
+    left: 108px;
+}
+
+.flash {
+    position: absolute;
+    top: 83px;
+    left: 143px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #d7e6ff;
+    box-shadow: 0 0 20px rgba(160,200,255,.35);
+}
+
+/* GENERATOR */
+
+.generator {
+    width: min(700px, 92vw);
+    margin-top: 30px;
+    padding: 30px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+}
+
+.generator h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.generator p {
+    margin: 0 0 20px;
+    font-size: 13px;
+    color: #718097;
+}
+
+.result {
+    width: 100%;
+    min-height: 55px;
+    padding: 17px;
+    border-radius: 12px;
+    background: #02050b;
+    border: 1px solid rgba(38,132,255,.18);
+    color: #6ca8ff;
+    font-size: 12px;
+    word-break: break-all;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.generate {
+    background: #2684ff;
+    color: white;
+}
+
+.copy {
+    background: rgba(255,255,255,.08);
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* NITRO */
+
+.nitro {
+    width: min(1100px, 90vw);
+    margin: 100px auto;
+    text-align: center;
+}
+
+.nitro h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.nitro > p {
+    color: #7d899d;
+    margin-bottom: 35px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card {
+    text-align: left;
+    padding: 28px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.07);
+    transition: .25s;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(38,132,255,.35);
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+.card-number {
+    color: #2684ff;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #78869b;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* DISCORD */
+
+.discord {
+    width: min(900px, 90vw);
+    margin: 0 auto 150px;
+    padding: 35px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 25px;
+}
+
+.discord img {
+    width: 100px;
+    height: 100px;
+    border-radius: 25px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,.1);
+}
+
+.discord-content {
+    flex: 1;
+}
+
+.discord-content h2 {
+    margin-bottom: 8px;
+}
+
+.discord-content p {
+    color: #77859a;
+    font-size: 14px;
+}
+
+.join {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    background: #2684ff;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.join:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(38,132,255,.25);
+}
+
+/* MUSIC */
+
+.music-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(430px, 90vw);
+    padding: 12px 17px;
+    border-radius: 18px;
+    background: rgba(4,8,15,.9);
+    border: 1px solid rgba(255,255,255,.09);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 5000;
+    box-shadow: 0 10px 35px rgba(0,0,0,.45);
+}
+
+.music-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8ba1bf;
+}
+
+#volume {
+    flex: 1;
+    accent-color: #2684ff;
+}
+
+#volumeText {
+    min-width: 40px;
+    text-align: right;
+    font-size: 11px;
+    color: #6ca8ff;
+}
+
+/* PLAY / PAUSE */
+
+#musicToggle {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    background: #2684ff;
+    color: white;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 18px rgba(38,132,255,.25);
+}
+
+#musicToggle:hover {
+    transform: scale(1.06);
+}
+
+/* MOBILE */
+
+@media (max-width: 750px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .status {
+        display: none;
+    }
+
+    .hero {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .camera-shell {
+        width: 290px;
+        height: 350px;
+    }
+
+    .lens {
+        width: 100px;
+        height: 100px;
+    }
+
+    .lens.one {
+        left: 30px;
+    }
+
+    .lens.two {
+        right: 30px;
+    }
+
+    .lens.three {
+        left: 95px;
+    }
+
+    .flash {
+        left: 127px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .discord {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .music-bar {
+        width: 94vw;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+
+<div id="loader">
+
+    <img
+        class="loader-gif"
+        src="resim.gif"
+        alt=""
+    >
+
+    <div class="loader-content">
+
+        <div class="loader-title">
+            G R E G O<span>T E A M</span>
+        </div>
+
+        <div class="loader-status">
+            Site açılıyor
+        </div>
+
+        <div class="progress">
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+        </div>
+
+        <div
+            class="percent"
+            id="percent">
+            0%
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        GREGO <span>TEAM</span>
+    </div>
+
+    <div class="status">
+        SYSTEM ONLINE
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="badge">
+        GREGO
+    </div>
+
+    <h1>
+        GREGO<span>.</span>
+    </h1>
+
+    <h2>
+        @GREGOTEAM :D
+    </h2>
+
+    <p>
+        Discord Nitro deneyimini, profil özelleştirmelerini
+        ve Nitro özelliklerini modern bir arayüz içerisinde
+        keşfetmek için hazırlanmış özel GREGOTEAM sayfası.
+    </p>
+
+
+    <!-- CAMERA -->
+
+    <div class="camera-area">
+
+        <div class="camera-shell">
+
+            <div class="lens one"></div>
+
+            <div class="lens two"></div>
+
+            <div class="lens three"></div>
+
+            <div class="flash"></div>
+
+            <div class="camera-title">
+                @GREGOTEAM
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- GENERATOR -->
+
+    <div class="generator">
+
+        <h3>
+            Nitro Promo
+        </h3>
+
+        <p>
+            Generate tuşuna basarak rastgele bir promo bağlantısı oluştur.
+        </p>
+
+        <div
+            class="result"
+            id="result">
+            Henüz bağlantı oluşturulmadı.
+        </div>
+
+        <div class="buttons">
+
+            <button
+                class="generate"
+                onclick="generatePromo()">
+                Generate
+            </button>
+
+            <button
+                class="copy"
+                onclick="copyPromo()">
+                Copy
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- NITRO -->
+
+<section class="nitro">
+
+    <h2>
+        Discord Nitro
+    </h2>
+
+    <p>
+        Nitro ile Discord deneyimini daha fazla kişiselleştirebilirsin.
+    </p>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-number">
+                01
+            </div>
+
+            <h3>
+                Custom Emojis
+            </h3>
+
+            <p>
+                Discord sunucularında daha geniş emoji
+                ve ifade seçenekleriyle iletişim deneyimini
+                kişiselleştir.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-number">
+                02
+            </div>
+
+            <h3>
+                Profile Customization
+            </h3>
+
+            <p>
+                Profil görünümünü farklı kişiselleştirme
+                seçenekleriyle kendine göre düzenle.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-number">
+                03
+            </div>
+
+            <h3>
+                Nitro Features
+            </h3>
+
+            <p>
+                Nitro aboneliğinin sunduğu çeşitli
+                Discord özelliklerini keşfet.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- DISCORD -->
+
+<section class="discord">
+
+    <img
+        src="resim.gif"
+        alt="GREGO">
+
+    <div class="discord-content">
+
+        <h2>
+            Discord Sunucumuza Katıl
+        </h2>
+
+        <p>
+            GREGO topluluğuna katıl
+            hakkında daha fazla bilgi edin.
+        </p>
+
+        <a
+            class="join"
+            href="https://discord.gg/UPMGwmxmE"
+            target="_blank"
+            rel="noopener noreferrer">
+            Sunucuya Katıl
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- MUSIC -->
+
+<video
+    id="song"
+    src="sarki.mp4"
+    autoplay
+    loop
+    playsinline
+    preload="auto"
+    style="display:none;">
+</video>
+
+
+<!-- MUSIC BAR -->
+
+<div class="music-bar">
+
+    <button
+        id="musicToggle"
+        type="button"
+        aria-label="Müziği başlat"
+        title="Müziği başlat">
+        ▶
+    </button>
+
+    <span class="music-label">
+        MUSIC
+    </span>
+
+    <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="50">
+
+    <span id="volumeText">
+        50%
+    </span>
+
+</div>
+
+
+<script>
+
+/* =========================
+   LOADER
+========================= */
+
+const loader =
+    document.getElementById("loader");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const percent =
+    document.getElementById("percent");
+
+let progress = 0;
+
+const loading =
+    setInterval(() => {
+
+        progress +=
+            Math.floor(Math.random() * 7) + 1;
+
+        if (progress >= 100) {
+
+            progress = 100;
+
+            clearInterval(loading);
+
+            setTimeout(() => {
+
+                loader.style.opacity = "0";
+                loader.style.transition =
+                    "opacity .5s ease";
+
+                setTimeout(() => {
+
+                    loader.style.display =
+                        "none";
+
+                }, 500);
+
+            }, 250);
+        }
+
+        progressBar.style.width =
+            progress + "%";
+
+        percent.textContent =
+            progress + "%";
+
+    }, 80);
+
+
+/* =========================
+   MUSIC
+========================= */
+
+const song =
+    document.getElementById("song");
+
+const volume =
+    document.getElementById("volume");
+
+const volumeText =
+    document.getElementById("volumeText");
+
+const musicToggle =
+    document.getElementById("musicToggle");
+
+
+song.volume = 0.5;
+song.loop = true;
+
+
+/*
+    Buton görünümü:
+    ▶ = müzik kapalı
+    ❚❚ = müzik açık
+*/
+
+function updateMusicButton() {
+
+    if (!song.paused) {
+
+        musicToggle.textContent = "❚❚";
+
+        musicToggle.setAttribute(
+            "aria-label",
+            "Müziği durdur"
+        );
+
+        musicToggle.setAttribute(
+            "title",
+            "Müziği durdur"
+        );
+
+    } else {
+
+        musicToggle.textContent = "▶";
+
+        musicToggle.setAttribute(
+            "aria-label",
+            "Müziği başlat"
+        );
+
+        musicToggle.setAttribute(
+            "title",
+            "Müziği başlat"
+        );
+
+    }
+
+}
+
+
+/*
+    Sayfa açılır açılmaz
+    autoplay denemesi.
+*/
+
+async function tryStartMusic() {
+
+    try {
+
+        await song.play();
+
+        updateMusicButton();
+
+    } catch (error) {
+
+        /*
+            Tarayıcı sesli autoplay'i
+            engellediyse buton ▶ kalır.
+        */
+
+        updateMusicButton();
+
+        console.log(
+            "Otomatik oynatma tarayıcı tarafından engellendi."
+        );
+
+    }
+
+}
+
+
+/*
+    PLAY / PAUSE
+*/
+
+musicToggle.addEventListener(
+    "click",
+    async () => {
+
+        if (song.paused) {
+
+            try {
+
+                await song.play();
+
+            } catch (error) {
+
+                console.log(
+                    "Müzik başlatılamadı:",
+                    error
+                );
+
+            }
+
+        } else {
+
+            song.pause();
+
+        }
+
+        updateMusicButton();
+
+    }
+);
+
+
+/*
+    Sayfa yüklenince autoplay dene.
+*/
+
+window.addEventListener(
+    "load",
+    () => {
+
+        tryStartMusic();
+
+    }
+);
+
+
+/*
+    Kullanıcı sayfada herhangi bir yere
+    dokunursa autoplay engelliyse
+    müziği başlatmayı tekrar dene.
+*/
+
+document.addEventListener(
+    "pointerdown",
+    async () => {
+
+        if (song.paused) {
+
+            try {
+
+                await song.play();
+
+                updateMusicButton();
+
+            } catch (error) {
+
+                updateMusicButton();
+
+            }
+
+        }
+
+    },
+    {
+        once: true
+    }
+);
+
+
+/*
+    Ses seviyesi
+*/
+
+volume.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            Number(volume.value);
+
+        song.volume =
+            value / 100;
+
+        volumeText.textContent =
+            value + "%";
+
+    }
+);
+
+
+/*
+    Video herhangi bir sebeple
+    oynatılmaya başladığında butonu güncelle.
+*/
+
+song.addEventListener(
+    "play",
+    () => {
+
+        updateMusicButton();
+
+    }
+);
+
+
+/*
+    Durduğunda butonu güncelle.
+*/
+
+song.addEventListener(
+    "pause",
+    () => {
+
+        updateMusicButton();
+
+    }
+);
+
+
+/* =========================
+   NITRO PROMO
+========================= */
+
+function randomPromo() {
+
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    let code = "";
+
+    for (
+        let i = 0;
+        i < 27;
+        i++
+    ) {
+
+        code +=
+            characters.charAt(
+                Math.floor(
+                    Math.random() *
+                    characters.length
+                )
+            );
+
+    }
+
+    return code;
+
+}
+
+
+function generatePromo() {
+
+    const code =
+        randomPromo();
+
+    const url =
+        "https://discord.com/billing/promotions/" +
+        code;
+
+    document.getElementById(
+        "result"
+    ).textContent = url;
+
+}
+
+
+async function copyPromo() {
+
+    const result =
+        document.getElementById(
+            "result"
+        ).textContent;
+
+    if (
+        !result ||
+        result ===
+        "Henüz bağlantı oluşturulmadı."
+    ) {
+
+        return;
+
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(
+            result
+        );
+
+        const button =
+            document.querySelector(".copy");
+
+        const oldText =
+            button.textContent;
+
+        button.textContent =
+            "Kopyalandı";
+
+        setTimeout(() => {
+
+            button.textContent =
+                oldText;
+
+        }, 1200);
+
+    } catch (error) {
+
+        console.log(
+            "Kopyalama başarısız:",
+            error
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
